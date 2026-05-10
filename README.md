@@ -32,6 +32,7 @@ Sentinelle/
 ├── middleware/            # Middleware Nuxt (auth)
 ├── pages/                # Pages publiques + dashboard
 ├── docker-compose.yml    # Postgres + API + Frontend
+├── mock-api.mjs           # Serveur mock (sans dépendances)
 └── nuxt.config.ts
 ```
 
@@ -61,7 +62,21 @@ npm install
 npm run dev -- --host 0.0.0.0 --port 3000  # → http://localhost:3000
 ```
 
-### 4. Tout en un (Docker)
+### 4. Mock API (sans PostgreSQL, développement rapide)
+
+```bash
+# Terminal 1 - API mock (stockage mémoire, données de démo pré-chargées)
+node mock-api.mjs
+# → http://localhost:4000
+
+# Terminal 2 - Frontend
+npm run dev -- --host 0.0.0.0 --port 3000
+# → http://localhost:3000
+```
+
+Le mock API simule tous les endpoints (auth, seniors, emails, abonnement, OAuth Gmail) sans base de données ni clés API tierces. Les données sont réinitialisées à chaque redémarrage.
+
+### 5. Tout en un (Docker)
 
 ```bash
 docker compose up --build
