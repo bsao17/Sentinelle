@@ -128,7 +128,7 @@ onMounted(async () => {
   margin: 0;
 }
 
-.conseil {
+.field p.conseil {
   background: var(--primary);
   color: white;
   padding: var(--spacing-md) var(--spacing-lg);
