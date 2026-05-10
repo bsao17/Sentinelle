@@ -1,30 +1,40 @@
 <template>
-  <div>
+  <div class="dashboard-page">
     <DashboardNav />
-    <h1>Gestion des seniors</h1>
-    <NuxtLink to="/dashboard/seniors/ajouter" class="button">+ Ajouter un senior</NuxtLink>
+    <div class="section-header">
+      <h1>Seniors</h1>
+      <NuxtLink to="/dashboard/seniors/ajouter" class="btn-add">+ Ajouter un senior</NuxtLink>
+    </div>
     <p v-if="loading" class="loading">Chargement...</p>
-    <div v-else-if="seniors.length === 0" class="empty">Aucun senior ajouté pour le moment.</div>
+    <div v-else-if="seniors.length === 0" class="empty">
+      <p>Aucun senior ajouté pour le moment.</p>
+      <NuxtLink to="/dashboard/seniors/ajouter" class="btn-primary">Ajouter un proche</NuxtLink>
+    </div>
     <div v-else class="card-list">
       <article v-for="senior in seniors" :key="senior.id" class="senior-card">
         <div class="card-header">
-          <h2>{{ senior.prenom }}</h2>
-          <span class="oauth-status" :class="senior.oauthStatus">
-            {{ statusLabel(senior.oauthStatus) }}
-          </span>
+          <div class="card-title">
+            <h2>{{ senior.prenom }}</h2>
+            <span class="oauth-status" :class="senior.oauthStatus">
+              {{ statusLabel(senior.oauthStatus) }}
+            </span>
+          </div>
+          <span class="status-dot" :class="senior.actif ? 'active' : 'inactive'"></span>
         </div>
-        <p>Email surveillé : {{ senior.gmail }}</p>
-        <p>Seuil d'alerte : {{ senior.seuilAlerte }}</p>
-        <p>Status : <strong :class="senior.actif ? 'active' : 'inactive'">{{ senior.actif ? 'Actif' : 'En pause' }}</strong></p>
-        <p v-if="senior.lastSyncAt">Dernière synchro : {{ formatDate(senior.lastSyncAt) }}</p>
+        <div class="card-details">
+          <div class="detail"><span class="detail-label">Email</span><span class="detail-value">{{ senior.gmail }}</span></div>
+          <div class="detail"><span class="detail-label">Seuil d'alerte</span><span class="detail-value">{{ senior.seuilAlerte }}</span></div>
+          <div class="detail"><span class="detail-label">Statut</span><span class="detail-value" :class="senior.actif ? 'text-success' : 'text-muted'">{{ senior.actif ? 'Actif' : 'En pause' }}</span></div>
+          <div class="detail" v-if="senior.lastSyncAt"><span class="detail-label">Dernière synchro</span><span class="detail-value">{{ formatDate(senior.lastSyncAt) }}</span></div>
+        </div>
         <div class="card-actions">
-          <button @click="toggleActive(senior.id, !senior.actif)" class="btn-outline">
+          <button @click="toggleActive(senior.id, !senior.actif)" class="btn-sm btn-outline">
             {{ senior.actif ? 'Mettre en pause' : 'Réactiver' }}
           </button>
-          <button @click="handleSync(senior.id)" class="btn-outline" :disabled="syncing === senior.id">
+          <button @click="handleSync(senior.id)" class="btn-sm btn-outline" :disabled="syncing === senior.id">
             {{ syncing === senior.id ? 'Synchro...' : 'Synchroniser' }}
           </button>
-          <button @click="handleRemove(senior.id)" class="btn-danger">Supprimer</button>
+          <button @click="handleRemove(senior.id)" class="btn-sm btn-danger">Supprimer</button>
         </div>
       </article>
     </div>
@@ -75,20 +85,157 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.button { display: inline-flex; padding: 0.75rem 1rem; background: #0f172a; color: white; border-radius: 0.75rem; text-decoration: none; margin-bottom: 1rem; }
-.card-list { display: grid; gap: 1rem; }
-.senior-card { border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.25rem; background: white; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
-.card-header h2 { margin: 0; }
-.oauth-status { font-size: 0.8rem; padding: 0.2rem 0.5rem; border-radius: 0.35rem; font-weight: 600; }
-.oauth-status.active { background: #f0fdf4; color: #15803d; }
-.oauth-status.pending { background: #fffbeb; color: #d97706; }
-.oauth-status.revoked { background: #fef2f2; color: #be123c; }
-.active { color: #15803d; }
-.inactive { color: #64748b; }
-.card-actions { display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap; }
-button { padding: 0.5rem 0.75rem; border: 1px solid #cbd5e1; background: white; border-radius: 0.5rem; cursor: pointer; font-size: 0.85rem; }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
-.btn-danger { border-color: #be123c; color: #be123c; }
-.loading, .empty { color: #64748b; padding: 1rem 0; }
+.dashboard-page {
+  padding: var(--spacing-md) 0;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+.section-header h1 {
+  margin: 0;
+}
+
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 0.6rem 1.1rem;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+.btn-add:hover {
+  background: var(--primary-light);
+  color: white;
+}
+
+.card-list {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.senior-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+.card-title h2 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+.status-dot {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.status-dot.active { background: var(--success); }
+.status-dot.inactive { background: var(--text-muted); }
+
+.oauth-status {
+  font-size: var(--font-size-xs);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.oauth-status.active { background: var(--success-bg); color: var(--success); }
+.oauth-status.pending { background: var(--warning-bg); color: var(--warning); }
+.oauth-status.revoked { background: var(--danger-bg); color: var(--danger); }
+.oauth-status.expired { background: var(--surface-hover); color: var(--text-muted); }
+
+.card-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm) var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
+}
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.detail-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.detail-value {
+  font-size: var(--font-size-sm);
+  color: var(--text);
+}
+.text-success { color: var(--success); }
+.text-muted { color: var(--text-muted); }
+
+.card-actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--border);
+}
+.btn-sm {
+  padding: 0.45rem 0.8rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  font-family: var(--font-family);
+  transition: all 0.15s ease;
+}
+.btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-outline {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+}
+.btn-outline:hover { border-color: var(--primary-light); color: var(--primary); }
+.btn-danger {
+  border: 1px solid transparent;
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+.btn-danger:hover { background: #fee2e2; }
+
+.btn-primary {
+  display: inline-flex;
+  padding: 0.75rem 1.25rem;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--font-size-sm);
+}
+
+.loading, .empty {
+  color: var(--text-muted);
+  padding: var(--spacing-xl) 0;
+  text-align: center;
+}
+.empty p {
+  margin-bottom: var(--spacing-lg);
+}
 </style>

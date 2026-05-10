@@ -11,7 +11,7 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: [],
+  css: ['~/assets/css/main.css'],
   modules: [],
   nitro: {
     devProxy: {

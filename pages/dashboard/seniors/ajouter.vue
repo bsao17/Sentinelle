@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div class="dashboard-page">
     <DashboardNav />
     <h1>Ajouter un senior</h1>
+    <p class="page-desc">Ajoutez un proche pour commencer à surveiller sa boîte Gmail.</p>
     <form @submit.prevent="handleSubmit" class="form-grid">
       <label>
         Prénom du senior
@@ -13,8 +14,8 @@
       </label>
       <p v-if="error" class="error">{{ error }}</p>
       <p v-if="success" class="success">{{ success }}</p>
-      <button type="submit" :disabled="loading">
-        {{ loading ? 'Ajout...' : 'Ajouter et envoyer l\'invitation' }}
+      <button type="submit" class="btn-submit" :disabled="loading">
+        {{ loading ? 'Ajout en cours...' : "Ajouter et envoyer l'invitation" }}
       </button>
     </form>
   </div>
@@ -52,11 +53,72 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.form-grid { display: grid; gap: 1rem; max-width: 480px; }
-label { display: grid; gap: 0.35rem; font-weight: 500; }
-input { padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 0.5rem; font-size: 1rem; }
-button { padding: 0.85rem 1.25rem; border: none; background: #0f172a; color: white; border-radius: 0.75rem; cursor: pointer; }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
-.error { color: #be123c; }
-.success { color: #15803d; }
+.dashboard-page {
+  padding: var(--spacing-md) 0;
+}
+.page-desc {
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin: -0.5rem 0 var(--spacing-xl);
+}
+.form-grid {
+  display: grid;
+  gap: var(--spacing-md);
+  max-width: 480px;
+}
+label {
+  display: grid;
+  gap: 0.35rem;
+  font-weight: 500;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+input {
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family);
+  transition: border-color 0.15s ease;
+}
+input:focus {
+  border-color: var(--primary-light);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-100);
+}
+.btn-submit {
+  padding: 0.85rem 1.25rem;
+  border: none;
+  background: var(--primary);
+  color: white;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  font-family: var(--font-family);
+  transition: all 0.15s ease;
+}
+.btn-submit:hover {
+  background: var(--primary-light);
+}
+.btn-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.error {
+  color: var(--danger);
+  font-size: var(--font-size-sm);
+  background: var(--danger-bg);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  margin: 0;
+}
+.success {
+  color: var(--success);
+  font-size: var(--font-size-sm);
+  background: var(--success-bg);
+  padding: var(--spacing-sm);
+  border-radius: var(--radius);
+  margin: 0;
+}
 </style>

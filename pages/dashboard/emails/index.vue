@@ -1,19 +1,19 @@
 <template>
-  <div>
+  <div class="dashboard-page">
     <DashboardNav />
     <h1>Emails analysés</h1>
     <p v-if="loading" class="loading">Chargement...</p>
     <div v-else-if="emails.length === 0" class="empty">Aucune analyse disponible pour le moment.</div>
     <ul v-else class="email-list">
       <li v-for="email in emails" :key="email.id">
-        <NuxtLink :to="`/dashboard/emails/${email.id}`">
-          <div>
-            <strong>{{ email.subject }}</strong>
-            <span class="meta">{{ email.fromEmail }}</span>
+        <NuxtLink :to="`/dashboard/emails/${email.id}`" class="email-link">
+          <div class="email-main">
+            <strong class="email-subject">{{ email.subject }}</strong>
+            <span class="email-meta">{{ email.fromEmail }}</span>
           </div>
-          <div class="right">
-            <span class="date">{{ formatDate(email.dateReceived) }}</span>
-            <span class="risk" :class="email.niveau">{{ email.niveau }}</span>
+          <div class="email-right">
+            <span class="email-date">{{ formatDate(email.dateReceived) }}</span>
+            <span class="email-risk" :class="email.niveau">{{ email.niveau }}</span>
           </div>
         </NuxtLink>
       </li>
@@ -39,15 +39,74 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.email-list { list-style: none; padding: 0; margin: 1rem 0 0; display: grid; gap: 0.75rem; }
-.email-list li { background: #f8fafc; border-radius: 1rem; padding: 0; }
-.email-list a { display: flex; justify-content: space-between; gap: 1rem; padding: 1rem; color: #0f172a; text-decoration: none; align-items: center; }
-.meta { display: block; font-size: 0.85rem; color: #64748b; margin-top: 0.25rem; }
-.right { text-align: right; flex-shrink: 0; }
-.date { display: block; font-size: 0.8rem; color: #64748b; margin-bottom: 0.25rem; }
-.risk { font-weight: 700; padding: 0.2rem 0.5rem; border-radius: 0.35rem; font-size: 0.8rem; }
-.risk.danger { color: #be123c; background: #fef2f2; }
-.risk.suspect { color: #d97706; background: #fffbeb; }
-.risk.safe { color: #15803d; background: #f0fdf4; }
-.loading, .empty { color: #64748b; padding: 1rem 0; }
+.dashboard-page {
+  padding: var(--spacing-md) 0;
+}
+.email-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-lg) 0 0;
+  display: grid;
+  gap: var(--spacing-sm);
+}
+.email-list li {
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.email-link {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  color: var(--text);
+  text-decoration: none;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.15s ease;
+}
+.email-link:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
+}
+.email-main {
+  flex: 1;
+  min-width: 0;
+}
+.email-subject {
+  display: block;
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.email-meta {
+  display: block;
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+.email-right {
+  text-align: right;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+}
+.email-date {
+  font-size: var(--font-size-xs);
+  color: var(--text-muted);
+}
+.email-risk {
+  font-weight: 700;
+  font-size: var(--font-size-xs);
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+.email-risk.danger { color: var(--danger); background: var(--danger-bg); }
+.email-risk.suspect { color: var(--warning); background: var(--warning-bg); }
+.email-risk.safe { color: var(--success); background: var(--success-bg); }
+.loading, .empty { color: var(--text-muted); padding: var(--spacing-xl) 0; }
 </style>

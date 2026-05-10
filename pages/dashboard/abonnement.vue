@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dashboard-page">
     <DashboardNav />
     <h1>Abonnement</h1>
     <p v-if="loading" class="loading">Chargement...</p>
@@ -14,7 +14,7 @@
         </div>
         <div class="detail-row">
           <span class="label">Prix</span>
-          <span class="value">9,90 € / mois</span>
+          <span class="value">9,90 &euro; / mois</span>
         </div>
         <div class="detail-row" v-if="subscription.currentPeriodEnd">
           <span class="label">Fin de période</span>
@@ -22,8 +22,8 @@
         </div>
       </div>
       <div class="button-group">
-        <button v-if="subscription.status !== 'active'" @click="handleActivate" :disabled="activating">
-          {{ activating ? 'Redirection...' : 'S\'abonner (9,90 €/mois)' }}
+        <button v-if="subscription.status !== 'active'" @click="handleActivate" :disabled="activating" class="btn-primary">
+          {{ activating ? 'Redirection...' : "S'abonner (9,90 €/mois)" }}
         </button>
         <button v-if="subscription.status === 'active'" @click="handlePause" class="btn-outline">
           Mettre en pause
@@ -31,7 +31,7 @@
         <button v-if="subscription.status === 'active'" @click="handleCancel" class="btn-danger">
           Résilier
         </button>
-        <button v-if="subscription.status === 'paused'" @click="handleActivate" :disabled="activating">
+        <button v-if="subscription.status === 'paused'" @click="handleActivate" :disabled="activating" class="btn-primary">
           Reprendre l'abonnement
         </button>
       </div>
@@ -91,19 +91,85 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.subscription-card { background: #f8fafc; border-radius: 1rem; padding: 1.5rem; max-width: 500px; }
-.status-badge { display: inline-block; padding: 0.35rem 0.75rem; border-radius: 0.5rem; font-weight: 700; font-size: 0.9rem; margin-bottom: 1.5rem; }
-.status-badge.active { background: #f0fdf4; color: #15803d; }
-.status-badge.paused { background: #fffbeb; color: #d97706; }
-.status-badge.cancelled, .status-badge.inactive { background: #f1f5f9; color: #64748b; }
-.details { display: grid; gap: 0.75rem; margin-bottom: 1.5rem; }
-.detail-row { display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid #e2e8f0; }
-.label { color: #64748b; }
-.value { font-weight: 600; }
-.button-group { display: flex; gap: 1rem; flex-wrap: wrap; }
-button { padding: 0.85rem 1rem; border: none; border-radius: 0.75rem; cursor: pointer; font-size: 0.9rem; background: #0f172a; color: white; }
-button:disabled { opacity: 0.6; cursor: not-allowed; }
-.btn-outline { background: white; border: 1px solid #cbd5e1; color: #0f172a; }
-.btn-danger { background: #fef2f2; color: #be123c; border: 1px solid #fecaca; }
-.loading { color: #64748b; }
+.dashboard-page {
+  padding: var(--spacing-md) 0;
+}
+.subscription-card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  max-width: 500px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.status-badge {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-xl);
+}
+.status-badge.active { background: var(--success-bg); color: var(--success); }
+.status-badge.paused { background: var(--warning-bg); color: var(--warning); }
+.status-badge.cancelled, .status-badge.inactive { background: var(--surface-hover); color: var(--text-muted); }
+.details {
+  display: grid;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-xl);
+}
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--border);
+}
+.label { color: var(--text-secondary); font-size: var(--font-size-sm); }
+.value { font-weight: 600; font-size: var(--font-size-sm); }
+.button-group {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+.btn-primary {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-family);
+  background: var(--primary);
+  color: white;
+  transition: all 0.15s ease;
+}
+.btn-primary:hover { background: var(--primary-light); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-outline {
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-family);
+  background: var(--surface);
+  color: var(--text-secondary);
+  transition: all 0.15s ease;
+}
+.btn-outline:hover { border-color: var(--primary-light); color: var(--primary); }
+.btn-danger {
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--danger-bg);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  font-family: var(--font-family);
+  background: var(--danger-bg);
+  color: var(--danger);
+  transition: all 0.15s ease;
+}
+.btn-danger:hover { background: #fee2e2; }
+.loading { color: var(--text-muted); }
 </style>

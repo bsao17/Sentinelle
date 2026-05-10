@@ -10,13 +10,13 @@
 .auth-layout {
   display: flex;
   justify-content: center;
-  padding: 2rem;
+  padding: var(--spacing-xl);
 }
 .auth-card {
   width: min(520px, 100%);
-  background: white;
-  border-radius: 1rem;
-  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-  padding: 2rem;
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
+  padding: var(--spacing-2xl);
 }
 </style>
