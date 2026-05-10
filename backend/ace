@@ -1,0 +1,11 @@
+#!/usr/bin/env node
+import 'reflect-metadata'
+import { Ignitor } from '@adonisjs/core'
+import { defineConfig } from '@adonisjs/core/ignitor'
+
+const ignitor = new Ignitor(
+  new URL('./', import.meta.url),
+  defineConfig({})
+)
+
+ignitor.ace().then((ace) => ace.handle(process.argv.splice(2)))

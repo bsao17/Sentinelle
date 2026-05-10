@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sentinelle-db
+    environment:
+      POSTGRES_USER: sentinelle
+      POSTGRES_PASSWORD: sentinelle
+      POSTGRES_DB: sentinelle
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U sentinelle']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sentinelle-api
+    environment:
+      PORT: 4000
+      HOST: 0.0.0.0
+      NODE_ENV: production
+      APP_KEY: ${APP_KEY}
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: sentinelle
+      DB_PASSWORD: sentinelle
+      DB_DATABASE: sentinelle
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
+      STRIPE_PRICE_SOLO: ${STRIPE_PRICE_SOLO}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URI}
+      CLAUDE_API_KEY: ${CLAUDE_API_KEY}
+      RESEND_API_KEY: ${RESEND_API_KEY}
+      MAIL_FROM: ${MAIL_FROM}
+    ports:
+      - '4000:4000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "node ace migration:run && node ace db:seed && node bin/server.js"
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinelle-frontend
+    ports:
+      - '3000:3000'
+    depends_on:
+      - api
+    environment:
+      NUXT_PUBLIC_API_URL: http://api:4000/api
+
+volumes:
+  pgdata:

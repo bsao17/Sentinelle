@@ -1,0 +1,9 @@
+node_modules/
+.nuxt/
+.output/
+backend/build/
+backend/node_modules/
+dist/
+.tmp/
+.env*.local
+*.log

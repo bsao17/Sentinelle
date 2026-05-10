@@ -1,0 +1,27 @@
+# Backend
+backend/build/
+backend/node_modules/
+backend/tmp/
+backend/.env
+
+# Frontend
+.nuxt/
+.output/
+dist/
+
+# Dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Logs
+*.log

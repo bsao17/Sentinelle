@@ -1,0 +1,49 @@
+{
+  "name": "sentinelle-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build",
+    "start": "node build/bin/server.js",
+    "migrate": "node ace migration:run",
+    "rollback": "node ace migration:rollback",
+    "seed": "node ace db:seed",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@adonisjs/ace": "^15.0.0",
+    "@adonisjs/auth": "^12.0.0",
+    "@adonisjs/bodyparser": "^12.0.0",
+    "@adonisjs/compiler": "^7.0.0",
+    "@adonisjs/core": "^6.0.0",
+    "@adonisjs/cors": "^3.0.0",
+    "@adonisjs/drive": "^5.0.0",
+    "@adonisjs/encryption": "^6.0.0",
+    "@adonisjs/env": "^5.0.0",
+    "@adonisjs/hash": "^10.0.0",
+    "@adonisjs/lucid": "^21.0.0",
+    "@adonisjs/mail": "^11.0.0",
+    "@adonisjs/repl": "^4.0.0",
+    "@adonisjs/session": "^8.0.0",
+    "@adonisjs/shield": "^11.0.0",
+    "@adonisjs/transmit": "^1.0.0",
+    "@sinclair/typebox": "^0.32.0",
+    "dotenv": "^16.4.0",
+    "googleapis": "^134.0.0",
+    "stripe": "^15.0.0",
+    "resend": "^3.0.0",
+    "luxon": "^3.4.0",
+    "pino": "^8.17.0",
+    "pino-pretty": "^11.0.0",
+    "vinejs": "^2.0.0"
+  },
+  "devDependencies": {
+    "@adonisjs/eslint-config": "^1.0.0",
+    "@types/luxon": "^3.4.0",
+    "@types/node": "^20.11.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.6.0"
+  }
+}

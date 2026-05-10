@@ -1,0 +1,46 @@
+{
+  "typescript": true,
+  "directories": {
+    "config": "config",
+    "contracts": "contracts",
+    "migrations": "database/migrations",
+    "seeds": "database/seeders",
+    "start": "start",
+    "tmp": "tmp",
+    "tests": "tests"
+  },
+  "providers": [
+    "@adonisjs/core/providers/app_provider",
+    "@adonisjs/core/providers/hash_provider",
+    "@adonisjs/core/providers/repl_provider",
+    "@adonisjs/lucid/database_provider",
+    "@adonisjs/auth/auth_provider",
+    "@adonisjs/cors/cors_provider",
+    "@adonisjs/bodyparser/bodyparser_provider",
+    "@adonisjs/mail/mail_provider",
+    "@adonisjs/drive/drive_provider",
+    "@adonisjs/shield/shield_provider",
+    "@adonisjs/encryption/encryption_provider"
+  ],
+  "preloads": [
+    "./start/routes.ts",
+    "./start/kernel.ts"
+  ],
+  "commands": [
+    "@adonisjs/core/commands",
+    "@adonisjs/lucid/commands"
+  ],
+  "metaFiles": [
+    {
+      "pattern": ".env",
+      "reloadServer": true
+    },
+    {
+      "pattern": "contracts/**/*.ts",
+      "reloadServer": true
+    }
+  ],
+  "ace": {
+    "commandDetails": {}
+  }
+}
